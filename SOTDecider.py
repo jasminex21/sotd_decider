@@ -34,7 +34,7 @@ class SOTDecider:
         # I want all times to be in CST bc I do listen to a lot of music 
         # close to midnight and tz being UTC would mess scores up
         cst_timezone = pytz.timezone("America/Chicago")
-        today_date = datetime.now().astimezone(cst_timezone) -timedelta(days=1)
+        today_date = datetime.now().astimezone(cst_timezone) # -timedelta(days=1)
         self.today = today_date.strftime("%d %b %Y")
         
         # this week: get the Monday of the current week
@@ -129,7 +129,10 @@ class SOTDecider:
         for track_dict in all_tracks: 
             # only time "date" is not a key is if I am currently playing a song
             if "date" in track_dict.keys(): 
-                day_played = track_dict["date"]["#text"].split(",")[0]
+                # need to convert the date from the timestamp bc the text date
+                # is in UTC
+                timestamp_played = int(track_dict["date"]["uts"])
+                day_played = datetime.fromtimestamp(timestamp_played).strftime("%d %b %Y")
                 track_name = f'{track_dict["name"]} - {track_dict["artist"]["#text"]}'
                 counts[day_played][track_name] += 1
 
@@ -176,7 +179,7 @@ class SOTDecider:
         all_tracks = self._get_lastfm_data()
         counts = self._count_tracks(all_tracks=all_tracks)
         day_counts = counts[self.today]
-        
+
         print(f"{len(all_tracks)} total tracks fetched; {len(day_counts)} from {self.today}.")
         
         scores = {}
