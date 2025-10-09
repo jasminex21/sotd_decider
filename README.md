@@ -11,9 +11,9 @@ Term Frequency-Inverse Document Frequency (TF-IDF) is a statistical metric that 
 
 The computation of the TF-IDF score for each word $t$ in some document $D$ within a corpus is given as follows: 
 
-$$\textnormal{TF}(t, D) = \frac {\textnormal{\# of times word \textit t appears in \textit D}} {\textnormal{total \# of words in \textit D}}$$
+$$\textnormal{TF}(t, D) = \frac {\textnormal{num. of times word \textit t appears in \textit D}} {\textnormal{total num. of words in \textit D}}$$
 
-$$\textnormal{IDF}(t) = \textnormal{log}(\frac {\textnormal{\# of documents in corpus}}{\textnormal{\# of documents in corpus that contain word \textit t}})$$
+$$\textnormal{IDF}(t) = \textnormal{log}(\frac {\textnormal{num. of documents in corpus}}{\textnormal{num. of documents in corpus that contain word \textit t}})$$
 
 $$\textnormal{TF-IDF}(t, D) = \textnormal{TF}(t, D) \times \textnormal{IDF}(t)$$
 
@@ -26,4 +26,10 @@ TF-IDF is a commonly-used technique in feature generation for natural language p
 #### Methodology
 Implementation is straightforward. I built a class `SOTDecider` that takes in a time range from which listening history will be pulled (serving as the corpus), computes TF-IDF scores for each song from the current day, and ultimately prints a table containing each song with alongside its score. The possible options for time range are `["this week", "last 7 days", "last 30 days"]`.
 
-The TF-IDF scores are computed as aforementioned, with a slight modification. As the time ranges are fairly short, IDF (and hence TF-IDF) will be 0 if I listened to a given song each day in the range. I'd like to place higher priority on the repetitiveness of a given track, so `(0.3 * TF)` is added to the final TF-IDF score.
+The TF-IDF scores are computed in the standard way, with a slight modification. As the time ranges are fairly short, IDF (and hence TF-IDF) will be 0 if I listened to a given song each day in the range. I'd like to place higher priority on the repetitiveness of a given track, so `(0.3 * TF)` is added to the final TF-IDF score.
+
+$$\textnormal{TF}(s, D) = \frac {\textnormal{num. of times song \textit s was played in day \textit D}} {\textnormal{total number of streams in \textit D}}$$
+
+$$\textnormal{IDF}(s) = \textnormal{log}(\frac {\textnormal{num. of days in date range}}{\textnormal{num. of days in range during which song \textit s was played}})$$
+
+$$\textnormal{TF-IDF}(s, D) = (\textnormal{TF}(s, D) \times \textnormal{IDF}(s)) + (0.3 \times \textnormal{TF}(s, D))$$
