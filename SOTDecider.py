@@ -42,7 +42,7 @@ class SOTDecider:
             monday = today_date - timedelta(days=today_date.weekday())
             monday = monday.replace(hour=0, minute=0, second=0, microsecond=0)
             
-            print(f"Fetching listening history from {monday.date()} on...")
+            print(f"Fetching listening history from {monday.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
             
             self.start_timestamp = int(monday.timestamp())
         
@@ -51,7 +51,7 @@ class SOTDecider:
             seven_ago = today_date - timedelta(days=7)
             seven_ago = seven_ago.replace(hour=0, minute=0, second=0, microsecond=0)
             
-            print(f"Fetching listening history from {seven_ago.date()} on...")
+            print(f"Fetching listening history from {seven_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
 
             self.start_timestamp = int(seven_ago.timestamp())
         
@@ -60,7 +60,7 @@ class SOTDecider:
             thirty_ago = today_date - timedelta(days=30)
             thirty_ago = thirty_ago.replace(hour=0, minute=0, second=0, microsecond=0)
 
-            print(f"Fetching listening history from {thirty_ago.date()} on...")
+            print(f"Fetching listening history from {thirty_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
 
             self.start_timestamp = int(thirty_ago.timestamp())
         

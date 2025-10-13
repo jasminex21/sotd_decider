@@ -1,5 +1,5 @@
 # SOTD Decider
-Script to objectively determine my Song of the Day using the notion of TF-IDF scores. 
+Script to quantitatively determine my Song of the Day using the notion of TF-IDF scores. 
 
 #### Background
 I have a little tradition of posting my "song of the day" (SOTD from here on) on a private Instagram story each evening alongside a summary of my day (a therapeutic exercise, kind of). My classification of a song as my SOTD is generally subjective, but it tends to be the most *repeated* song I listened to in the given day that is also the most *unique*. As in, it should be a song that I listened to a lot in the given day, that I didn't listen to as much in other days. I realized that my mental model of deciding on a SOTD can be likened to a TF-IDF score, where in this application each song is equivalent to a term/word, and each day is equivalent to a document. 
