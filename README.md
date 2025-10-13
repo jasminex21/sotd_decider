@@ -24,7 +24,7 @@ The TF-IDF score will be high for a given word if that word is "important" to a 
 TF-IDF is a commonly-used technique in feature generation for natural language processing applications. In this case, however, I'd like to generalize its use (or really, the notion of it) to measure the importance of a song (analogous to a term) to my day (document) relative to many days (corpus). 
 
 #### Methodology
-Implementation is straightforward. I built a class `SOTDecider` that takes in a time range from which listening history will be pulled (serving as the corpus), computes TF-IDF scores for each song from the current day, and ultimately prints a table containing each song with alongside its score. The possible options for time range are `["this week", "last 7 days", "last 30 days"]`.
+Implementation is straightforward. I built a class `SOTDecider` that takes in a time range from which listening history will be pulled (serving as the corpus), computes TF-IDF scores for each song from the current day, and ultimately prints a table containing each song with alongside its score. The possible options for time range are `["this week", "last 7 days", "last 30 days"]`. (I prefer to use "this week" as my reference corpus, but note that this means the range length differs every day. Also, the scores on Monday would be completely based on TF, because IDF will be 0 for all songs)
 
 The TF-IDF scores are computed in the standard way, with a slight modification. As the time ranges are fairly short, IDF (and hence TF-IDF) will be 0 if I listened to a given song each day in the range. I'd like to place higher priority on the repetitiveness of a given track, so `(0.3 * TF)` is added to the final TF-IDF score.
 

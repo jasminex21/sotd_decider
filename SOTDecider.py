@@ -22,13 +22,13 @@ class SOTDecider:
                 Lastfm API key.
             range_option: 
                 The range of dates to pull listening data from; must be one of 
-                ["this week", "last 7 days", "last 30 days"] where "this week" 
-                is the start of the week (Monday 12AM) to now, and "last X days"
-                is (today - X) 12AM. 
+                ["this week", "last 5 days", "last 7 days", "last 30 days"] where 
+                "this week" is the start of the week (Monday 12AM) to now, and 
+                "last X days" is (today - X) 12AM. 
         """
         
         # grab UNIX timestamps for the range
-        range_options = ["this week", "last 7 days", "last 30 days"]
+        range_options = ["this week", "last 5 days", "last 7 days", "last 30 days"]
         assert range_option in range_options, f"range_option MUST be one of {range_options}."
         
         # I want all times to be in CST bc I do listen to a lot of music 
@@ -54,6 +54,15 @@ class SOTDecider:
             print(f"Fetching listening history from {seven_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
 
             self.start_timestamp = int(seven_ago.timestamp())
+        
+        # last 5 days
+        elif range_option == "last 5 days": 
+            five_ago = today_date - timedelta(days=5)
+            five_ago = five_ago.replace(hour=0, minute=0, second=0, microsecond=0)
+
+            print(f"Fetching listening history from {five_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
+
+            self.start_timestamp = int(five_ago.timestamp())
         
         # last 30 days (midnight)
         else: 
@@ -206,5 +215,5 @@ if __name__ == "__main__":
     load_dotenv()
 
     decider = SOTDecider(lastfm_api_key=os.environ.get("LASTFM_API_KEY"),
-                         range_option="this week")
+                         range_option="last 5 days")
     decider.get_scores()
