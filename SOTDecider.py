@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from typing import DefaultDict, List, Dict, Counter
 from tabulate import tabulate
 
+# TODO: also print out the total number of streams (not just unique songs)
+# bc I want to be able to back-calculate the number of times I stream a song/day
 class SOTDecider: 
 
     def __init__(self, lastfm_api_key: str, 
@@ -120,7 +122,7 @@ class SOTDecider:
 
             print(f"Unable to fetch listening data from Last.fm: {e}")
 
-        for i in range(1, total_pages + 1):
+        for i in range(2, total_pages + 1):
             all_tracks += __fetch_tracks(page=i)
         
         return all_tracks
@@ -189,7 +191,7 @@ class SOTDecider:
         counts = self._count_tracks(all_tracks=all_tracks)
         day_counts = counts[self.today]
 
-        print(f"{len(all_tracks)} total tracks fetched; {len(day_counts)} from {self.today}.")
+        print(f"{len(all_tracks)} total unique tracks fetched; {len(day_counts)} ({sum(day_counts.values())} streams) from {self.today}.")
         
         scores = {}
 
@@ -215,5 +217,5 @@ if __name__ == "__main__":
     load_dotenv()
 
     decider = SOTDecider(lastfm_api_key=os.environ.get("LASTFM_API_KEY"),
-                         range_option="last 5 days")
+                         range_option="this week")
     decider.get_scores()
