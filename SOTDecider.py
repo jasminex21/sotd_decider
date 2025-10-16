@@ -192,6 +192,7 @@ class SOTDecider:
         day_counts = counts[self.today]
 
         print(f"{len(all_tracks)} total unique tracks fetched; {len(day_counts)} ({sum(day_counts.values())} streams) from {self.today}.")
+        print(f"Today's uniqueness score: {round(len(day_counts)/sum(day_counts.values()), 2)}")
         
         scores = {}
 
