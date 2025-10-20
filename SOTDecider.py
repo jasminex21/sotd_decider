@@ -1,4 +1,5 @@
 import requests
+import re
 import os
 import pytz
 import math
@@ -30,14 +31,16 @@ class SOTDecider:
         """
         
         # grab UNIX timestamps for the range
-        range_options = ["this week", "last 5 days", "last 7 days", "last 30 days"]
-        assert range_option in range_options, f"range_option MUST be one of {range_options}."
+        # range_options = ["this week", "last 5 days", "last 7 days", "last 30 days"]
+        # assert range_option in range_options, f"range_option MUST be one of {range_options}."
         
         # I want all times to be in CST bc I do listen to a lot of music 
         # close to midnight and tz being UTC would mess scores up
         cst_timezone = pytz.timezone("America/Chicago")
         today_date = datetime.now().astimezone(cst_timezone) # -timedelta(days=1)
         self.today = today_date.strftime("%d %b %Y")
+        # pattern for "last X days" matching
+        pattern = r"^last \d+ days$"
         
         # this week: get the Monday of the current week
         if range_option == "this week": 
@@ -48,32 +51,45 @@ class SOTDecider:
             
             self.start_timestamp = int(monday.timestamp())
         
-        # last 7 days (midnight)
-        elif range_option == "last 7 days":
-            seven_ago = today_date - timedelta(days=7)
-            seven_ago = seven_ago.replace(hour=0, minute=0, second=0, microsecond=0)
-            
-            print(f"Fetching listening history from {seven_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
+        elif re.fullmatch(pattern, range_option):
+            # extract the requested number of days
+            num_days = int(re.findall(r"\d+", range_option)[0])
+            days_ago = today_date - timedelta(days=num_days)
+            days_ago = days_ago.replace(hour=0, minute=0, second=0, microsecond=0)
 
-            self.start_timestamp = int(seven_ago.timestamp())
+            print(f"Fetching listening history from {days_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
+
+            self.start_timestamp = int(days_ago.timestamp())
+        
+        else: 
+            raise ValueError('range_option MUST be one of "this week" or "last X days" where X is an integer.')
+        
+        # last 7 days (midnight)
+        # elif range_option == "last 7 days":
+        #     seven_ago = today_date - timedelta(days=7)
+        #     seven_ago = seven_ago.replace(hour=0, minute=0, second=0, microsecond=0)
+            
+        #     print(f"Fetching listening history from {seven_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
+
+        #     self.start_timestamp = int(seven_ago.timestamp())
         
         # last 5 days
-        elif range_option == "last 5 days": 
-            five_ago = today_date - timedelta(days=5)
-            five_ago = five_ago.replace(hour=0, minute=0, second=0, microsecond=0)
+        # elif range_option == "last 5 days": 
+        #     five_ago = today_date - timedelta(days=5)
+        #     five_ago = five_ago.replace(hour=0, minute=0, second=0, microsecond=0)
 
-            print(f"Fetching listening history from {five_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
+        #     print(f"Fetching listening history from {five_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
 
-            self.start_timestamp = int(five_ago.timestamp())
+        #     self.start_timestamp = int(five_ago.timestamp())
         
         # last 30 days (midnight)
-        else: 
-            thirty_ago = today_date - timedelta(days=30)
-            thirty_ago = thirty_ago.replace(hour=0, minute=0, second=0, microsecond=0)
+        # else: 
+        #     thirty_ago = today_date - timedelta(days=30)
+        #     thirty_ago = thirty_ago.replace(hour=0, minute=0, second=0, microsecond=0)
 
-            print(f"Fetching listening history from {thirty_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
+        #     print(f"Fetching listening history from {thirty_ago.date()} to {today_date.strftime('%Y-%m-%d %H:%M:%S')}...")
 
-            self.start_timestamp = int(thirty_ago.timestamp())
+        #     self.start_timestamp = int(thirty_ago.timestamp())
         
         self.lastfm_api_key = lastfm_api_key
         self.lastfm_username = "jasminexx18"
@@ -218,5 +234,5 @@ if __name__ == "__main__":
     load_dotenv()
 
     decider = SOTDecider(lastfm_api_key=os.environ.get("LASTFM_API_KEY"),
-                         range_option="this week")
+                         range_option="last 3 days")
     decider.get_scores()
