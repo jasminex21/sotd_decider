@@ -179,6 +179,7 @@ class SOTDecider:
         print(f"{len(all_tracks)} total unique tracks fetched from range; {len(day_counts)} ({sum(day_counts.values())} streams) from {self.today}.")
         if sum(day_counts.values()):
             print(f"Today's uniqueness score: {round(len(day_counts)/sum(day_counts.values()), 2)}")
+            print(f"Max TF: {sum(day_counts.values())}/{sum(day_counts.values())} = 1.00; Max IDF: log({len(counts)}/1) = {round(math.log(len(counts)/1), 2)}; Max TF-IDF: {round(1.3 * math.log(len(counts)/1), 2)}")
         
         scores = {}
 
