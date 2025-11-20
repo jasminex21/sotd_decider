@@ -33,7 +33,8 @@ class SOTDecider:
         # I want all times to be in CST bc I do listen to a lot of music 
         # close to midnight and tz being UTC would mess scores up
         cst_timezone = pytz.timezone("America/Chicago")
-        today_date = datetime.now().astimezone(cst_timezone) #  - timedelta(days=1)
+        today_date = datetime.now().astimezone(cst_timezone)# - timedelta(days=1)
+        # self.end_timestamp = int(today_date.timestamp())
         self.today = today_date.strftime("%d %b %Y")
         # pattern for "last X days" matching
         pattern = r"^last \d+ days$"
@@ -50,6 +51,7 @@ class SOTDecider:
         elif re.fullmatch(pattern, range_option):
             # extract the requested number of days
             num_days = int(re.findall(r"\d+", range_option)[0])
+            assert num_days > 0 and isinstance(num_days, int)
             days_ago = today_date - timedelta(days=num_days)
             days_ago = days_ago.replace(hour=0, minute=0, second=0, microsecond=0)
 
@@ -58,7 +60,7 @@ class SOTDecider:
             self.start_timestamp = int(days_ago.timestamp())
         
         else: 
-            raise ValueError('range_option MUST be one of "this week" or "last X days" where X is an integer.')
+            raise ValueError('range_option MUST be one of "this week" or "last X days" where X is a positive integer.')
         
         self.lastfm_api_key = lastfm_api_key
         self.lastfm_username = "jasminexx18"
@@ -179,7 +181,7 @@ class SOTDecider:
         print(f"{len(all_tracks)} total unique tracks fetched from range; {len(day_counts)} ({sum(day_counts.values())} streams) from {self.today}.")
         if sum(day_counts.values()):
             print(f"Today's uniqueness score: {round(len(day_counts)/sum(day_counts.values()), 2)}")
-            print(f"Max TF: {sum(day_counts.values())}/{sum(day_counts.values())} = 1.00; Max IDF: log({len(counts)}/1) = {round(math.log(len(counts)/1), 2)}; Max TF-IDF: {round(1.3 * math.log(len(counts)/1), 2)}")
+            print(f"Min TF: 1/{sum(day_counts.values())} = {round(1/sum(day_counts.values()), 5)}; Max TF: {sum(day_counts.values())}/{sum(day_counts.values())} = 1.00; Max IDF: log({len(counts)}/1) = {round(math.log(len(counts)/1), 2)}; Max TF-IDF: {round(1.3 * math.log(len(counts)/1), 2)}")
         
         scores = {}
 
