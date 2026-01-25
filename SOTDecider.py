@@ -14,7 +14,8 @@ from tabulate import tabulate
 class SOTDecider: 
 
     def __init__(self, lastfm_api_key: str, 
-                 range_option:str="this week"):
+                 range_option:str="this week", 
+                 end_time:datetime=None):
 
         """
         Constructor. The key task done here is translating the start date to a
@@ -34,7 +35,9 @@ class SOTDecider:
         # close to midnight and tz being UTC would mess scores up
         cst_timezone = pytz.timezone("America/Chicago")
         today_date = datetime.now().astimezone(cst_timezone)# - timedelta(days=1)
-        # self.end_timestamp = int(today_date.timestamp())
+        # adding option to add an end date (mainly for when my listening crosses the 12AM boundary)
+        today_date = today_date if not end_time else end_time
+        self.end_timestamp = int(today_date.timestamp())
         self.today = today_date.strftime("%d %b %Y")
         # pattern for "last X days" matching
         pattern = r"^last \d+ days$"
@@ -69,7 +72,7 @@ class SOTDecider:
 
         """Fetches listening history from Last.fm from the selected time range."""
 
-        url = f"http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=jasminexx18&api_key={self.lastfm_api_key}&from={self.start_timestamp}&format=json"
+        url = f"http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=jasminexx18&api_key={self.lastfm_api_key}&from={self.start_timestamp}&to={self.end_timestamp}&format=json"
         
         # list to store all tracks across all pages
         all_tracks = []
@@ -83,7 +86,7 @@ class SOTDecider:
                     The page number.
             """
             
-            url = f"http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=jasminexx18&page={page}&api_key={self.lastfm_api_key}&from={self.start_timestamp}&format=json"
+            url = f"http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=jasminexx18&page={page}&api_key={self.lastfm_api_key}&from={self.start_timestamp}&to={self.end_timestamp}&format=json"
             tracks = []
 
             try: 
@@ -181,7 +184,7 @@ class SOTDecider:
         print(f"{len(all_tracks)} total unique tracks fetched from range; {len(day_counts)} ({sum(day_counts.values())} streams) from {self.today}.")
         if sum(day_counts.values()):
             print(f"Today's uniqueness score: {round(len(day_counts)/sum(day_counts.values()), 2)}")
-            print(f"Min TF: 1/{sum(day_counts.values())} = {round(1/sum(day_counts.values()), 5)}; Max TF: {sum(day_counts.values())}/{sum(day_counts.values())} = 1.00; Max IDF: log({len(counts)}/1) = {round(math.log(len(counts)/1), 2)}; Max TF-IDF: {round(1.3 * math.log(len(counts)/1), 2)}")
+            print(f"Min TF: 1/{sum(day_counts.values())} = {round(1/sum(day_counts.values()), 5)}; Max TF: {sum(day_counts.values())}/{sum(day_counts.values())} = 1.00; Max IDF: log({len(counts)}/1) = {round(math.log(len(counts)/1), 2)}; Max TF-IDF: {round(math.log(len(counts)/1) + 0.3, 2)}")
         
         scores = {}
 
