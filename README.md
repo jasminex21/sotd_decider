@@ -28,7 +28,7 @@ TF-IDF is a commonly-used technique in feature generation for natural language p
 #### Methodology
 Implementation is straightforward. I built a class `SOTDecider` that takes in a time range from which listening history will be pulled (serving as the corpus), computes TF-IDF scores for each song from the current day, and ultimately prints a table containing each song with alongside its score. The possible options for time range are `["this week", "last X days"]`, where `X` in `"last X days"` is any valid positive integer. 
 
-The TF-IDF scores are computed in the standard way, with a slight modification. As the time ranges are fairly short, IDF (and hence TF-IDF) will be 0 if I listened to a given song each day in the range. I'd like to place higher priority on the repetitiveness of a given track, so `(0.3 * TF)` is added to the final TF-IDF score.
+The TF-IDF scores are computed in the standard way, with a slight modification. As the time ranges are fairly short, IDF (and hence TF-IDF) will be 0 if I listened to a given song each day in the range. I'd like to place higher priority on the repetitiveness of a given track, so `(0.3 * TF)` is added to the final TF-IDF score. This ensures that no song will have a nonzero final TF-IDF score.
 
 $$\textnormal{TF}(s, D) = \frac {\textnormal{num. of times song \textit s was played in day \textit D}} {\textnormal{total number of streams in \textit D}}$$
 
