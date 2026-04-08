@@ -16,6 +16,6 @@ if __name__ == "__main__":
     yday_date = yday_date.replace(hour=23, minute=59, second=59, microsecond=59)
 
     decider = SOTDecider(lastfm_api_key=os.environ.get("LASTFM_API_KEY"),
-                         range_option="last 5 days",
+                         range_option="last 4 days",
                          end_time=yday_date)
     decider.get_scores()

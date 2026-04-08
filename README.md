@@ -40,3 +40,5 @@ $$\textnormal{TF-IDF}(s, D) = (\textnormal{TF}(s, D) \times \textnormal{IDF}(s))
 To get current day scores, run `make SCORES.txt`.
 
 To get yesterday's scores, run `make -f yday_makefile.mk`.
+
+To get alignment scores, run `make -f alignment.mk`.
