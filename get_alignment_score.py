@@ -4,6 +4,7 @@ import pytz
 from datetime import datetime
 from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyClientCredentials
+from typing import List
 
 class AlignmentScorer: 
 
@@ -14,10 +15,24 @@ class AlignmentScorer:
        with the objective SOTDs."""
 
     def __init__(self, 
-                 client_id, 
-                 client_secret,
-                 mental_id,
-                 algo_id):
+                 client_id: str, 
+                 client_secret: str,
+                 mental_id: str,
+                 algo_id: str):
+        
+        """
+        Constructor. Sets up Spotify authentication.
+
+        Args: 
+            client_id: 
+                The unique identifier for your Spotify Developers app.
+            client_secret:
+                The unique key for your Spotify Developers app.
+            mental_id: 
+                ID of the mental model playlist on Spotify.
+            algo_id: 
+                ID of the algorithmic playlist on Spotify.
+        """
         
         self.mental_id = mental_id
         self.algo_id = algo_id
@@ -27,7 +42,7 @@ class AlignmentScorer:
                                                 client_secret=client_secret)
         self.SPOTIFY = spotipy.Spotify(auth_manager=auth_manager)
 
-    def _fetch_playlist_tracks(self, playlist_id):
+    def _fetch_playlist_tracks(self, playlist_id: str) -> List[str]:
 
         """Helper function to fetch tracks and artists from a playlist, 
            given the playlist ID. Returns a list containing the song 
@@ -84,7 +99,7 @@ class AlignmentScorer:
 
         # for this we cannot compute a pure intersection with sets bc
         # the order must be preserved
-        def _get_sorted_intersection():
+        def _get_sorted_intersection() -> int:
 
             """Helper function to get the ordered intersection count
                btwn the two track lists. As in, only tracks that are
@@ -112,7 +127,8 @@ class AlignmentScorer:
     
     def get_all(self):
 
-        """Pipeline."""
+        """Pipeline to fetch tracks from both playlists and compute 
+           the alignment score. Formats output."""
 
         # get and format current datetime
         cst_timezone = pytz.timezone("America/Chicago")
