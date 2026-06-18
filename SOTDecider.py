@@ -3,6 +3,7 @@ import re
 import os
 import pytz
 import math
+import pickle
 from datetime import datetime, timedelta
 from collections import Counter, defaultdict
 from dotenv import load_dotenv
@@ -169,7 +170,7 @@ class SOTDecider:
 
         return math.log(numerator/denominator)
 
-    def get_scores(self) -> None: 
+    def get_scores(self) -> Dict[str, float]: 
 
         """Pipeline to compute scores for all songs on the current day relative
            to all days in the time frame. Calls all utility functions and prints
@@ -203,6 +204,8 @@ class SOTDecider:
 
         print(tabulate(scores, headers=table_headers, 
                        tablefmt="rounded_grid", showindex="always"))
+        
+        return scores
 
 if __name__ == "__main__":
 
@@ -210,4 +213,8 @@ if __name__ == "__main__":
 
     decider = SOTDecider(lastfm_api_key=os.environ.get("LASTFM_API_KEY"),
                          range_option="last 4 days")
-    decider.get_scores()
+    scores = decider.get_scores()
+
+    # save scores dict to pickle file
+    with open("SCORES.pickle", "wb") as file:
+        pickle.dump(scores, file)
