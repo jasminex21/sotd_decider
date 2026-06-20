@@ -3,7 +3,7 @@ name: Daily Song Add
 on:
   schedule:
     # TODO: change to 00 05 * * * (UTC - midnight CST)
-    - cron: '55 12 * * *'
+    - cron: '57 00 * * *'
   workflow_dispatch:
 
 jobs:
