@@ -6,7 +6,7 @@ I have a little tradition of posting my "song of the day" (SOTD from here on) on
 
 I am aware that this is a completely trivial task (in practicality and in difficulty), but the idea came up and I just had to implement it. I think it would be fun to see how my mental TF-IDF model aligns with actual scores.
 
-The computed SOTDs are stored [here](https://open.spotify.com/playlist/17eqTWTtmI2pm5cHuT4psH?si=9a2ed7f401a54340), and my mental SOTDs are stored [here](https://open.spotify.com/playlist/1TsgqA7bkOcBKJOhfiJm7U?si=81cd578f749a45fd). Updated daily.
+The computed SOTDs are stored [here](https://open.spotify.com/playlist/17eqTWTtmI2pm5cHuT4psH?si=9a2ed7f401a54340), and my mental SOTDs are stored [here](https://open.spotify.com/playlist/1TsgqA7bkOcBKJOhfiJm7U?si=81cd578f749a45fd). Updated every proper gym day. Daily computed SOTDs, regardless of gym status, are stored [here] via an automated workflow that runs daily.
 
 #### TF-IDF
 Term Frequency-Inverse Document Frequency (TF-IDF) is a statistical metric that evaluates how "important" a word is to a document relative to a collection of documents. Each *word* in each document is given a TF-IDF score, which is defined as the product of term frequency (how many times the word appears in the document over the total number of words in the document) and inverse document frequency (a measure of how unique the word is within the corpus of documents).
