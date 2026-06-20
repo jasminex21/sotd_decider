@@ -1,19 +1,14 @@
 """Script that adds the top song computed in SCORES.txt to a Spotify playlist.
-   Intended to run at the end of every day."""
+   Intended to run at the end of every day. (Or rather, it will run at the start
+   of the next day such that all songs from the previous day have been recorded
+   in the Last.fm history.)"""
 
 import subprocess
 import os
 import pickle
 import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-
-# run SOTDecider (make SCORES.txt) to get final scores
-
-# read from SCORES.pickle to get top song
-
-# search up song on spotify and add to playlist
 
 def run_makefile(target=None):
 
@@ -64,7 +59,7 @@ def add_song(spotify_client_id,
     track_id = track["id"]
 
     SPOTIFY.playlist_add_items(playlist_id=playlist_id, items=[track_id])
-    print("Successfully added songs to your Spotify playlist!")
+    print("Successfully added top song to your Spotify playlist!")
 
 
 if __name__ == "__main__":
