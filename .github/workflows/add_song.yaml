@@ -4,7 +4,7 @@ on:
   schedule:
     # TODO: change to 00 05 * * * (5AM UTC - midnight CST)
     - cron: '15 20 * * *'
-      timezone: '	America/Chicago'
+      timezone: 'America/Chicago'
   workflow_dispatch:
 
 jobs:
