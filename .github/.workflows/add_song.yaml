@@ -1,0 +1,32 @@
+name: Daily Song Add
+
+on:
+  schedule:
+      # TODO: change to 00 05 * * * (UTC - midnight CST)
+    - cron: '40 12 * * *'
+    - workflow_dispatch:
+
+jobs:
+  add-song:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore Spotify cache       
+        run: echo '${{ secrets.SPOTIFY_CACHE }}' > .cache
+
+      - name: Run script                  
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+        run: python record_top_song.py

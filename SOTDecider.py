@@ -205,16 +205,14 @@ class SOTDecider:
         print(tabulate(scores, headers=table_headers, 
                        tablefmt="rounded_grid", showindex="always"))
         
-        return scores
-
+        # save scores dict to pickle file
+        with open("SCORES.pickle", "wb") as file:
+            pickle.dump(scores, file)
+        
 if __name__ == "__main__":
 
     load_dotenv()
 
     decider = SOTDecider(lastfm_api_key=os.environ.get("LASTFM_API_KEY"),
                          range_option="last 4 days")
-    scores = decider.get_scores()
-
-    # save scores dict to pickle file
-    with open("SCORES.pickle", "wb") as file:
-        pickle.dump(scores, file)
+    decider.get_scores()
