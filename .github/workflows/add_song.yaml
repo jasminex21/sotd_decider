@@ -3,7 +3,7 @@ name: Daily Song Add
 on:
   schedule:
     # TODO: change to 00 05 * * * (UTC - midnight CST)
-    - cron: '42 12 * * *'
+    - cron: '55 12 * * *'
   workflow_dispatch:
 
 jobs:
@@ -29,4 +29,6 @@ jobs:
         env:
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}  
+          LASTFM_USERNAME: ${{ secrets.LASTFM_USERNAME }}
         run: python record_top_song.py
