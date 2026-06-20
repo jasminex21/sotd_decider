@@ -2,8 +2,8 @@ name: Daily Song Add
 
 on:
   schedule:
-    # TODO: change to 00 05 * * * (UTC - midnight CST)
-    - cron: '57 00 * * *'
+    # TODO: change to 00 05 * * * (5AM UTC - midnight CST)
+    - cron: '05 01 * * *'
   workflow_dispatch:
 
 jobs:
