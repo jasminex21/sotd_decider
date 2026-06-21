@@ -23,7 +23,7 @@ def run_makefile():
     txt_path = "SCORES.txt"
 
     # run make -f yday_makefile.mk (NOT make SCORES.txt)
-    command.extend(["-f", "yday_makefile.mk"]) 
+    command.extend(["-f", "wf_yday_makefile.mk"]) 
     
     try:
         if os.path.exists(txt_path):
