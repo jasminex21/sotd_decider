@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     # get yesterday's date midnight timestamp
     # cst_timezone = pytz.timezone("America/Chicago")
-    yday_date = datetime.now()# .astimezone(cst_timezone) - timedelta(days=1)
+    yday_date = datetime.now()- timedelta(days=1)# .astimezone(cst_timezone) - timedelta(days=1)
     yday_date = yday_date.replace(hour=23, minute=59, second=59, microsecond=59)
 
     decider = SOTDecider(lastfm_api_key=os.environ.get("LASTFM_API_KEY"),
