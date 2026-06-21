@@ -3,6 +3,11 @@
    of the next day such that all songs from the previous day have been recorded
    in the Last.fm history.)"""
 
+# TODO: there's something wrong w the song extraction from last.fm - it works
+# just fine when run manually but somehow it cuts off the last few songs. So
+# maybe the time conversion in SOTDecider is in UTC. Also the date range is 
+# off again
+
 import subprocess
 import os
 import pickle
