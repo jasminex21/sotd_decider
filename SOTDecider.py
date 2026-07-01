@@ -33,7 +33,7 @@ class SOTDecider:
         # I want all times to be in CST bc I do listen to a lot of music 
         # close to midnight and tz being UTC would mess scores up
         cst_timezone = pytz.timezone("America/Chicago")
-        today_date = datetime.now().astimezone(cst_timezone)# - timedelta(days=1)
+        today_date = datetime.now(tz=cst_timezone)# .astimezone(cst_timezone)# - timedelta(days=1)
         # adding option to add an end date (mainly for when my listening crosses the 12AM boundary)
         today_date = today_date if not end_time else end_time
         self.end_timestamp = int(today_date.timestamp())
@@ -125,6 +125,7 @@ class SOTDecider:
         """
 
         counts = defaultdict(Counter)
+        cst_timezone = pytz.timezone("America/Chicago")
 
         for track_dict in all_tracks: 
             # only time "date" is not a key is if I am currently playing a song
@@ -132,7 +133,7 @@ class SOTDecider:
                 # need to convert the date from the timestamp bc the text date
                 # is in UTC
                 timestamp_played = int(track_dict["date"]["uts"])
-                day_played = datetime.fromtimestamp(timestamp_played).strftime("%d %b %Y")
+                day_played = datetime.fromtimestamp(timestamp_played, tz=cst_timezone).strftime("%d %b %Y")
                 track_name = f'{track_dict["name"]} - {track_dict["artist"]["#text"]}'
                 counts[day_played][track_name] += 1
 
